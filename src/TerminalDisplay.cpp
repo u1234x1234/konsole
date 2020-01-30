@@ -46,6 +46,11 @@
 #include <QAccessible>
 #include <QtMath>
 
+#include <QByteArray>
+#include <QStringList>
+#include <QDir>
+#include <QDebug>
+
 // KDE
 #include <KShell>
 #include <KColorScheme>
@@ -564,6 +569,7 @@ TerminalDisplay::~TerminalDisplay()
     disconnect(_blinkTextTimer);
     disconnect(_blinkCursorTimer);
 
+    delete _wallpaper;
     delete _readOnlyMessageWidget;
     delete _outputSuspendedMessageWidget;
     delete[] _image;
@@ -677,9 +683,29 @@ void TerminalDisplay::setOpacity(qreal opacity)
     onColorsChanged();
 }
 
-void TerminalDisplay::setWallpaper(const ColorSchemeWallpaper::Ptr &p)
+void TerminalDisplay::setWallpaper(const ColorSchemeWallpaper *p)
 {
-    _wallpaper = p;
+    QByteArray path = qgetenv("KONSOLE_WALLPAPER_DIR");
+    QDir dir(QString::fromLatin1(path));
+    if (path.size() && dir.exists()) {
+        QStringList filters;
+        filters << QString::fromLatin1("*.jpg") << QString::fromLatin1("*.JPG");
+        filters << QString::fromLatin1("*.png") << QString::fromLatin1("*.PNG");
+        dir.setNameFilters(filters);
+        QFileInfoList images = dir.entryInfoList();
+        if (images.size()) {
+            struct timespec ts;
+            clock_gettime(CLOCK_MONOTONIC, &ts);
+            srand((time_t)ts.tv_nsec);
+
+            size_t idx = rand() % images.size();
+            QString randomPath = images.at(idx).filePath();
+            _wallpaper = new ColorSchemeWallpaper(randomPath);
+        }
+    }
+    else {
+        _wallpaper = const_cast<ColorSchemeWallpaper*>(p);
+    }
 }
 
 void TerminalDisplay::drawBackground(QPainter& painter, const QRect& rect, const QColor& backgroundColor, bool useOpacitySetting)

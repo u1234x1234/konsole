@@ -38,10 +38,10 @@ namespace Konsole {
  * This class holds the wallpaper pixmap associated with a color scheme.
  * The wallpaper object is shared between multiple TerminalDisplay.
  */
-class ColorSchemeWallpaper : public QSharedData
+class ColorSchemeWallpaper
 {
 public:
-    typedef QExplicitlySharedDataPointer<ColorSchemeWallpaper> Ptr;
+    // typedef QExplicitlySharedDataPointer<ColorSchemeWallpaper> Ptr;
 
     explicit ColorSchemeWallpaper(const QString &path);
     ~ColorSchemeWallpaper();
@@ -166,7 +166,7 @@ public:
 
     void setWallpaper(const QString &path);
 
-    ColorSchemeWallpaper::Ptr wallpaper() const;
+    ColorSchemeWallpaper* wallpaper() const;
 
     /**
      * Enables colors randomization. This will cause the palette
@@ -238,7 +238,7 @@ private:
 
     bool _colorRandomization;
 
-    ColorSchemeWallpaper::Ptr _wallpaper;
+    ColorSchemeWallpaper* _wallpaper;
 
     static const char * const colorNames[TABLE_COLORS];
     static const char * const translatedColorNames[TABLE_COLORS];

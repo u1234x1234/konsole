@@ -99,7 +99,7 @@ public:
     void setOpacity(qreal opacity);
 
     /** Sets the background picture */
-    void setWallpaper(const ColorSchemeWallpaper::Ptr &p);
+    void setWallpaper(const ColorSchemeWallpaper *p);
 
     /**
      * Specifies whether the terminal display has a vertical scroll bar, and if so whether it
@@ -804,7 +804,7 @@ private:
     QRgb _blendColor;
 
     ColorScheme const* _colorScheme;
-    ColorSchemeWallpaper::Ptr _wallpaper;
+    ColorSchemeWallpaper* _wallpaper;
 
     // list of filters currently applied to the display.  used for links and
     // search highlight

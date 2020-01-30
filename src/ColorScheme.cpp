@@ -212,6 +212,7 @@ ColorScheme::ColorScheme(const ColorScheme &other) :
 
 ColorScheme::~ColorScheme()
 {
+    delete _wallpaper;
     delete[] _table;
     delete[] _randomTable;
 }
@@ -544,7 +545,7 @@ void ColorScheme::setWallpaper(const QString &path)
     _wallpaper = new ColorSchemeWallpaper(path);
 }
 
-ColorSchemeWallpaper::Ptr ColorScheme::wallpaper() const
+ColorSchemeWallpaper* ColorScheme::wallpaper() const
 {
     return _wallpaper;
 }
