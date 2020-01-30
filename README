@@ -1,3 +1,12 @@
+Fork of Konsole with the added option to set a random background image for each new tab.
+
+Usage:
+KONSOLE_WALLPAPER_DIR=/path/to/dir/with/images` konsole
+
+
+
+
+
 Konsole - KDE's Terminal Emulator
 ==================================
 
