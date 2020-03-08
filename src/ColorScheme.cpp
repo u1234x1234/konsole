@@ -24,6 +24,9 @@
 #include "hsluv.h"
 
 // Qt
+#include <QGuiApplication>
+#include <QScreen>
+#include <Qt>
 #include <QPainter>
 
 // KDE
@@ -574,6 +577,10 @@ void ColorSchemeWallpaper::load()
 
     if (_picture->isNull()) {
         _picture->load(_path);
+        int width = QGuiApplication::primaryScreen()->geometry().width();
+        QPixmap t = _picture->scaledToWidth(width, Qt::TransformationMode::SmoothTransformation);
+        delete _picture;
+        _picture = new QPixmap(t);
     }
 }
 
